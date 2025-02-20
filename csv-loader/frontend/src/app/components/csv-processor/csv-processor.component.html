@@ -1,0 +1,58 @@
+<div class="main-container">
+  <div class="history-container">
+    <h3>File History</h3>
+    <ul>
+      <li *ngFor="let fileName of uploadHistory">{{ fileName }}</li>
+    </ul>
+  </div>
+  <div class="upload-container">
+    <div class="custom-file-upload">
+      <input
+        type="file"
+        accept=".csv"
+        (change)="onFileSelected($event)"
+        #fileInput
+        id="fileInput"
+        hidden
+      />
+      <button (click)="fileInput?.click()">
+        {{ selectedFile ? selectedFile.name : 'Choose File' }}
+      </button>
+    </div>
+    <div
+      class="drag-drop-area"
+      [class.dragover]="isDraggingOver"
+      (drop)="onFileDropped($event)"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)"
+    >
+      Drag and drop your CSV file here
+    </div>
+    <p *ngIf="selectedFile">File attached: {{ selectedFile.name }}</p>
+    <button (click)="onUploadButtonClick()" [disabled]="!selectedFile">
+      Process File
+    </button>
+  </div>
+  <div *ngIf="resultTable" class="result-container">
+    <div class="result-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Employee ID #1</th>
+            <th>Employee ID #2</th>
+            <th>Project ID</th>
+            <th>Days worked</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of resultTable">
+            <td>{{ row.employeeId1 }}</td>
+            <td>{{ row.employeeId2 }}</td>
+            <td>{{ row.projectId }}</td>
+            <td>{{ row.days }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
