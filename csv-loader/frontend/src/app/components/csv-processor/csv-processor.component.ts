@@ -17,6 +17,7 @@ export class CsvProcessorComponent {
   public uploadResult: string = '';
   public resultTable: EmployeePairs[] = [];
   public isDraggingOver: boolean = false;
+  public errorMessage: string = '';
 
   constructor(private csvService: CsvService) {}
 
@@ -44,9 +45,15 @@ export class CsvProcessorComponent {
           this.fileInput.nativeElement.value = '';
         }
         this.resultTable = response;
+        this.errorMessage = '';
       },
       error: (error) => {
         console.error('File upload failed', error);
+        this.errorMessage = 'File upload failed. Please check the CSV file format and data.';
+        this.selectedFile = null;
+        if (this.fileInput) {
+          this.fileInput.nativeElement.value = '';
+        }
       }
     });
   }

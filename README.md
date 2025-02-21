@@ -14,6 +14,7 @@ It processes CSV files containing employee work history and displays the results
 ✅ Identifies employee pairs who worked together the longest  
 ✅ Displays all common projects where the pair worked together  
 ✅ Calculates the number of days they worked per project  
+✅ If the data or file is not in the correct format an error message will be displayed  
 ✅ Presents results in a structured table, sorted by days worked (DESC)  
 
 ## Backend Setup (Spring Boot)
