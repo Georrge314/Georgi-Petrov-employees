@@ -28,7 +28,8 @@
     >
       Drag and drop your CSV file here
     </div>
-    <p *ngIf="selectedFile">File attached: {{ selectedFile.name }}</p>
+    <p *ngIf="selectedFile && !isLoading">File attached: {{ selectedFile.name }}</p>
+    <div *ngIf="isLoading" class="spinner"></div>
     <button (click)="onUploadButtonClick()" [disabled]="!selectedFile">
       Process File
     </button>

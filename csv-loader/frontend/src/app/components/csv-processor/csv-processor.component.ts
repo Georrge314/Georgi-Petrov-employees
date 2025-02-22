@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CsvService, EmployeePairs } from '../../services/csv.service';
 
-
 @Component({
   selector: 'app-csv-processor',
   standalone: true,
@@ -18,6 +17,7 @@ export class CsvProcessorComponent {
   public resultTable: EmployeePairs[] = [];
   public isDraggingOver: boolean = false;
   public errorMessage: string = '';
+  public isLoading: boolean = false;
 
   constructor(private csvService: CsvService) {}
 
@@ -37,6 +37,7 @@ export class CsvProcessorComponent {
   }
 
   uploadFile(file: File) {
+    this.isLoading = true;
     this.csvService.processFile(file).subscribe({
       next: (response: EmployeePairs[]) => {
         this.addToUploadHistory(file.name);
@@ -46,18 +47,27 @@ export class CsvProcessorComponent {
         }
         this.resultTable = response;
         this.errorMessage = '';
+        this.isLoading = false;
       },
       error: (error) => {
         console.error('File upload failed', error);
-        this.errorMessage = 'File upload failed. Please check the CSV file format and data.';
+        this.errorMessage =
+          'File upload failed. Please check the CSV file format and data.';
         this.selectedFile = null;
         if (this.fileInput) {
           this.fileInput.nativeElement.value = '';
         }
-      }
+        this.isLoading = false;
+        this.clearErrorMessageAfterDelay();
+      },
     });
   }
-  
+
+  private clearErrorMessageAfterDelay(): void {
+    setTimeout(() => {
+      this.errorMessage = '';
+    }, 5000);
+  }
 
   private addToUploadHistory(fileName: string): void {
     this.uploadHistory.unshift(fileName);
